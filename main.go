@@ -692,25 +692,23 @@ func DeleteMahasiswa(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	idMhs := mux.Vars(r)["id"]
-	sqlStat := `
-		DELETE FROM mahasiswa
-		WHERE id = ?
-	`
-	_, err := db.Exec(sqlStat, idMhs)
-	if err != nil {
+	sqlStat := `SELECT * FROM mahasiswa WHERE id = ?`
+	rows, _ := db.Query(sqlStat, idMhs)
+	if !rows.Next() {
 		w.WriteHeader(http.StatusBadRequest)
 		response := helpers.Response{
-			Status: 400,
-			Error:  "invalid argument while deleting mahasiswa data in database",
+			Status: 404,
+			Error:  "mahasiswa data not found",
 		}
 		json.NewEncoder(w).Encode(response)
 		return
 	}
+
 	sqlStat = `
 		DELETE FROM mahasiswa_jurusan
 		WHERE id_mahasiswa = ?
 	`
-	_, err = db.Exec(sqlStat, idMhs)
+	_, err := db.Exec(sqlStat, idMhs)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		response := helpers.Response{
@@ -730,6 +728,21 @@ func DeleteMahasiswa(w http.ResponseWriter, r *http.Request) {
 		response := helpers.Response{
 			Status: 400,
 			Error:  "invalid argument while deleting mahasiswa_hobi data in database",
+		}
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+	sqlStat = `
+		DELETE FROM mahasiswa
+		WHERE id = ?
+	`
+	_, err = db.Exec(sqlStat, idMhs)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		response := helpers.Response{
+			Status:  400,
+			Error:   "invalid argument while deleting mahasiswa data in database",
+			Success: err.Error(),
 		}
 		json.NewEncoder(w).Encode(response)
 		return

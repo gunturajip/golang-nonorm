@@ -174,6 +174,27 @@ If you find this project useful, please consider giving it a ⭐️ on [GitHub](
 
 ### 3. Get Mahasiswa by ID
 
+**_Expected Response:_**
+
+```json
+{
+    "status": 200,
+    "success": "successfully get a mahasiswa data including nama_jurusan and nama_hobi",
+    "error": "",
+    "data": {
+        "mahasiswa": {
+            "id": 3,
+            "nama": "Alan",
+            "usia": 13,
+            "gender": false,
+            "tanggal_registrasi": "2023-04-23T12:17:48Z"
+        },
+        "nama_jurusan": "Guru",
+        "nama_hobi": "Minum"
+    }
+}
+```
+
 ### 4. Update Mahasiswa by ID
 
 **_Form data:_**
@@ -224,3 +245,14 @@ If you find this project useful, please consider giving it a ⭐️ on [GitHub](
 **_Status Code:_** 200
 
 ### 5. Delete Mahasiswa by ID
+
+**_Expected Response:_**
+
+```json
+{
+    "status": 200,
+    "success": "successfully deleted data mahasiswa (including mahasiswa_jurusan, mahasiswa_hobi)",
+    "error": "",
+    "data": null
+}
+```
