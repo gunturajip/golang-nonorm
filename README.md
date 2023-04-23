@@ -199,13 +199,13 @@ If you find this project useful, please consider giving it a ⭐️ on [GitHub](
 
 **_Form data:_**
 
-| Key                        | Value   | Description |
-| -------------------------- | ------- | ----------- |
-| nama                       | Aji     |             |
-| usia                       | 20      |             |
-| gender                     | 0       |             |
-| nama_jurusan               | Shinobi |             |
-| nama_hobi                  | Makan   |             |
+| Key                        | Value               | Description |
+| -------------------------- | ------------------- | ----------- |
+| nama                       | Aji                 |             |
+| usia                       | 897                 |             |
+| gender                     | 0                   |             |
+| nama_jurusan               | Teknik Tenaga Dalam |             |
+| nama_hobi                  | Boboch              |             |
 
 **_Expected Response:_**
 
@@ -216,27 +216,27 @@ If you find this project useful, please consider giving it a ⭐️ on [GitHub](
     "error": "",
     "data": {
         "mahasiswa": {
-            "id": 2,
+            "id": 5,
             "nama": "Aji",
-            "usia": 20,
+            "usia": 897,
             "gender": false,
             "tanggal_registrasi": "0001-01-01T00:00:00Z"
         },
         "jurusan": {
-            "id": 2,
-            "nama_jurusan": "Shinobi"
+            "id": 10,
+            "nama_jurusan": "Teknik Tenaga Dalam"
         },
         "hobi": {
-            "id": 1,
-            "nama_hobi": "Makan"
+            "id": 9,
+            "nama_hobi": "Boboch"
         },
         "mahasiswa_jurusan": {
-            "id_mahasiswa": 2,
-            "id_jurusan": 2
+            "id_mahasiswa": 5,
+            "id_jurusan": 10
         },
         "mahasiswa_hobi": {
-            "id_mahasiswa": 2,
-            "id_hobi": 1
+            "id_mahasiswa": 5,
+            "id_hobi": 9
         }
     }
 }
