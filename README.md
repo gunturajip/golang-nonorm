@@ -1,7 +1,5 @@
-export $(grep -v '^#' .env | xargs)
-# RESIM (Mahasiswa Simple REST API)
-
-RESIM is an Instagram Clone for CRUD-ing mahasiswa data, as well as their jurusan and hobi on separate tables.
+# Guntur Aji Pratama - Backend Developer - Technical Test Jobhun Internship 2023
+This project represents a simple RESTful API for CRUD-ing mahasiswa data, as well as their jurusan and hobi on separate tables.
 To-do:
 - Need update for repository and service
 - Change id to uuid in any models for data security
