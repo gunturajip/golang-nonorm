@@ -541,7 +541,18 @@ func UpdateMahasiswa(w http.ResponseWriter, r *http.Request) {
 
 	var mjhmjmh = helpers.MJHMJMH{}
 	idMhs, _ := strconv.Atoi(mux.Vars(r)["id"])
-	sqlStat := `
+	sqlStat := `SELECT * FROM mahasiswa WHERE id = ?`
+	rows, _ := db.Query(sqlStat, idMhs)
+	if !rows.Next() {
+		w.WriteHeader(http.StatusBadRequest)
+		response := helpers.Response{
+			Status: 404,
+			Error:  "mahasiswa data not found",
+		}
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+	sqlStat = `
 		UPDATE mahasiswa SET nama = ?, usia = ?, gender = ?
 		WHERE id = ?
 	`
@@ -568,13 +579,15 @@ func UpdateMahasiswa(w http.ResponseWriter, r *http.Request) {
 		JOIN jurusan ON mahasiswa_jurusan.id_jurusan = jurusan.id
 		WHERE mahasiswa_jurusan.id_mahasiswa = ?
 	`
-	rows, _ := db.Query(sqlStat, idMhs)
+	rows, _ = db.Query(sqlStat, idMhs)
 	var iter int
 	for rows.Next() {
 		_ = rows.Scan(&mjhmjmh.Jurusan.ID, &mjhmjmh.Jurusan.NamaJurusan, &mjhmjmh.MahasiswaJurusan.IDMahasiswa, &mjhmjmh.MahasiswaJurusan.IDJurusan)
-		iter++
+		if mjhmjmh.Jurusan.NamaJurusan != nama_jurusan {
+			iter++
+		}
 	}
-	if iter == 0 {
+	if iter > 0 {
 		sqlStat = `
 			INSERT INTO jurusan (nama_jurusan)
 			VALUES (?)
@@ -627,9 +640,11 @@ func UpdateMahasiswa(w http.ResponseWriter, r *http.Request) {
 	iter = 0
 	for rows.Next() {
 		_ = rows.Scan(&mjhmjmh.Hobi.ID, &mjhmjmh.Hobi.NamaHobi, &mjhmjmh.MahasiswaHobi.IDMahasiswa, &mjhmjmh.MahasiswaHobi.IDHobi)
-		iter++
+		if mjhmjmh.Hobi.NamaHobi != nama_hobi {
+			iter++
+		}
 	}
-	if iter == 0 {
+	if iter > 0 {
 		sqlStat = `
 			INSERT INTO hobi (nama_hobi)
 			VALUES (?)
@@ -645,6 +660,10 @@ func UpdateMahasiswa(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		idHob, _ := tmp.LastInsertId()
+		mjhmjmh.Hobi = models.Hobi{
+			ID:       int(idHob),
+			NamaHobi: nama_hobi,
+		}
 
 		// execute sql query for inserting a new mahasiswa_hobi data
 		sqlStat := `
@@ -661,6 +680,10 @@ func UpdateMahasiswa(w http.ResponseWriter, r *http.Request) {
 			}
 			json.NewEncoder(w).Encode(response)
 			return
+		}
+		mjhmjmh.MahasiswaHobi = models.MahasiswaHobi{
+			IDMahasiswa: idMhs,
+			IDHobi:      int(idHob),
 		}
 	}
 
